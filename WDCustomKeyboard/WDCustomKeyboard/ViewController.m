@@ -37,6 +37,9 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [_textfield resignFirstResponder];
+    [_textfield reloadInputViews];
 }
+
+
 
 @end

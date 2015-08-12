@@ -16,8 +16,8 @@
     if (self) {
         _textfield = textfield;
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        self.frame = (CGRect){0,0,320,300};
         textfield.inputView = self;
-        
     }
     return self;
 }
@@ -29,6 +29,11 @@
     [[UIColor redColor] setFill];
     [@"Hello keyboard" drawAtPoint:CGPointMake(rect.size.width / 2, rect.size.height/2)
                           withFont:[UIFont systemFontOfSize:10.f]];
+    
+    WDKeyboardRef numKeyboard = WDCreateKeyboardByType(WDKeyboardTypeAlphabet);
+    
+    WDKeyboardShuffleKeys(numKeyboard);
+
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #ifndef __WDCustomKeyboard__WDKeyboard__
 #define __WDCustomKeyboard__WDKeyboard__
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -54,5 +53,14 @@ typedef struct _WDKeyboard  * WDKeyboardRef;
 extern
 WDKeyboardRef
 WDCreateKeyboardByType(WDKeyboardType type);
+
+/**
+ *  打乱按键顺序
+ *
+ *  @param keyboardRef keys里面的字符序列会被随机打乱
+ */
+extern
+void
+WDKeyboardShuffleKeys(WDKeyboardRef keyboardRef);
 
 
