@@ -30,10 +30,15 @@
     [@"Hello keyboard" drawAtPoint:CGPointMake(rect.size.width / 2, rect.size.height/2)
                           withFont:[UIFont systemFontOfSize:10.f]];
     
-    WDKeyboardRef numKeyboard = WDCreateKeyboardByType(WDKeyboardTypeAlphabet);
+    WDKeyboardRef alphaKeyboard = WDCreateKeyboardByType(WDKeyboardTypeAlphabet);
     
-    WDKeyboardShuffleKeys(numKeyboard);
+    WDKeyboardShuffleKeys(alphaKeyboard);
+    
+    WDKeyboardRecoverKeys(alphaKeyboard);
+    
+    WDKeyboardRelease(alphaKeyboard);
 
 }
+
 
 @end

@@ -68,7 +68,9 @@ WDCreateKeyboardByType(WDKeyboardType type)
     KeyInfo keyinfo = KeyInfoTable[type];
     keyboardRef->keyboardType = type;
     keyboardRef->keySize = keyinfo.numKeySize;
-    keyboardRef->keys = keyinfo.keys;
+    keyboardRef->keys = malloc(keyinfo.numKeySize);
+    
+    memcpy(keyboardRef->keys, keyinfo.keys, keyinfo.numKeySize);
     
     
     switch (type) {
@@ -133,6 +135,47 @@ WDKeyboardShuffleKeys(WDKeyboardRef keyboardRef)
     }
     printf("<---------\n");
     printf("elapsedTime :%llu nanoseconds", (elapsed));
+    
+    free(keyboardRef->keys);
+    keyboardRef->keys = malloc(keyboardRef->keySize);
+    memcpy(keyboardRef->keys, keys, keyboardRef->keySize);
+    
+}
+
+void
+WDKeyboardRecoverKeys(WDKeyboardRef keyboardRef)
+{
+    if (keyboardRef == NULL) {
+        return;
+    }
+    
+    KeyInfo keyinfo = KeyInfoTable[keyboardRef->keyboardType];
+    uint32_t keyCount = keyinfo.numKeySize;
+    
+    
+    printf("keys before recover:\n--------->");
+    for (int i = 0; i<keyCount; i++) {
+        printf(" %c ", keyboardRef->keys[i]);
+    }
+    printf("<---------\n");
+    
+    free(keyboardRef->keys);
+    keyboardRef->keys = malloc(keyCount);
+    memcpy(keyboardRef->keys, keyinfo.keys, keyinfo.numKeySize);
+    
+    printf("keys after recover:\n--------->");
+    for (int i = 0; i<keyCount; i++) {
+        printf(" %c ", keyboardRef->keys[i]);
+    }
+    printf("<---------\n");
+}
+
+#pragma mark life cycle
+void
+WDKeyboardRelease(WDKeyboardRef keyboardRef)
+{
+    free(keyboardRef->keys);
+    free(keyboardRef);
 }
 
 

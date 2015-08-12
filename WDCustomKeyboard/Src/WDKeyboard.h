@@ -63,4 +63,20 @@ extern
 void
 WDKeyboardShuffleKeys(WDKeyboardRef keyboardRef);
 
+/**
+ *  恢复打乱的顺序，按照默认排序
+ *
+ *  @param keyboardRef keys里面的字符序列会被随机打乱
+ */
+extern
+void
+WDKeyboardRecoverKeys(WDKeyboardRef keyboardRef);
+
+/**
+ * 释放WDKeyboardRef 资源
+ */
+extern
+void
+WDKeyboardRelease(WDKeyboardRef keyboardRef);
+
 
