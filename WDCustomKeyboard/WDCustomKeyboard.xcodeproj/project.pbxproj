@@ -14,6 +14,8 @@
 		89F3FA981B7B2217003A7BB8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89F3FA971B7B2217003A7BB8 /* Images.xcassets */; };
 		89F3FA9B1B7B2217003A7BB8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89F3FA991B7B2217003A7BB8 /* LaunchScreen.xib */; };
 		89F3FAA71B7B2217003A7BB8 /* WDCustomKeyboardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F3FAA61B7B2217003A7BB8 /* WDCustomKeyboardTests.m */; };
+		89F3FAB31B7B2298003A7BB8 /* WDCustomKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F3FAB21B7B2298003A7BB8 /* WDCustomKeyboard.m */; };
+		89F3FAB61B7B2A77003A7BB8 /* WDKeyboard.c in Sources */ = {isa = PBXBuildFile; fileRef = 89F3FAB41B7B2A77003A7BB8 /* WDKeyboard.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		89F3FAA01B7B2217003A7BB8 /* WDCustomKeyboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WDCustomKeyboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		89F3FAA51B7B2217003A7BB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89F3FAA61B7B2217003A7BB8 /* WDCustomKeyboardTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDCustomKeyboardTests.m; sourceTree = "<group>"; };
+		89F3FAB11B7B2298003A7BB8 /* WDCustomKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDCustomKeyboard.h; sourceTree = "<group>"; };
+		89F3FAB21B7B2298003A7BB8 /* WDCustomKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDCustomKeyboard.m; sourceTree = "<group>"; };
+		89F3FAB41B7B2A77003A7BB8 /* WDKeyboard.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = WDKeyboard.c; sourceTree = "<group>"; };
+		89F3FAB51B7B2A77003A7BB8 /* WDKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDKeyboard.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +69,8 @@
 		89F3FA7E1B7B2217003A7BB8 = {
 			isa = PBXGroup;
 			children = (
-				89F3FA891B7B2217003A7BB8 /* WDCustomKeyboard */,
+				89F3FAB01B7B226D003A7BB8 /* Src */,
+				89F3FA891B7B2217003A7BB8 /* WDCustomKeyboardDemo */,
 				89F3FAA31B7B2217003A7BB8 /* WDCustomKeyboardTests */,
 				89F3FA881B7B2217003A7BB8 /* Products */,
 			);
@@ -78,7 +85,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		89F3FA891B7B2217003A7BB8 /* WDCustomKeyboard */ = {
+		89F3FA891B7B2217003A7BB8 /* WDCustomKeyboardDemo */ = {
 			isa = PBXGroup;
 			children = (
 				89F3FA8E1B7B2217003A7BB8 /* AppDelegate.h */,
@@ -90,6 +97,7 @@
 				89F3FA991B7B2217003A7BB8 /* LaunchScreen.xib */,
 				89F3FA8A1B7B2217003A7BB8 /* Supporting Files */,
 			);
+			name = WDCustomKeyboardDemo;
 			path = WDCustomKeyboard;
 			sourceTree = "<group>";
 		};
@@ -117,6 +125,17 @@
 				89F3FAA51B7B2217003A7BB8 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		89F3FAB01B7B226D003A7BB8 /* Src */ = {
+			isa = PBXGroup;
+			children = (
+				89F3FAB11B7B2298003A7BB8 /* WDCustomKeyboard.h */,
+				89F3FAB21B7B2298003A7BB8 /* WDCustomKeyboard.m */,
+				89F3FAB51B7B2A77003A7BB8 /* WDKeyboard.h */,
+				89F3FAB41B7B2A77003A7BB8 /* WDKeyboard.c */,
+			);
+			path = Src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,7 +238,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89F3FAB31B7B2298003A7BB8 /* WDCustomKeyboard.m in Sources */,
 				89F3FA931B7B2217003A7BB8 /* ViewController.m in Sources */,
+				89F3FAB61B7B2A77003A7BB8 /* WDKeyboard.c in Sources */,
 				89F3FA901B7B2217003A7BB8 /* AppDelegate.m in Sources */,
 				89F3FA8D1B7B2217003A7BB8 /* main.m in Sources */,
 			);
