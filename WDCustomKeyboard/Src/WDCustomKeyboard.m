@@ -55,20 +55,33 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 #pragma mark TopToolBar
 - (UIView *)p_createToolbarView
 {
+    UIFont *titleFont = [UIFont systemFontOfSize:14.0f];
+    CGFloat buttonWidth = 100;
     UIView *toolbarView = [[UIView alloc] initWithFrame:(CGRect){0,0,320,50}];
     
-    
+    toolbarView.backgroundColor = [UIColor greenColor];
     UIButton *shuffleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    shuffleButton.frame = CGRectMake(toolbarView.frame.size.width - 50, 0, 50, 50);
+    shuffleButton.frame = CGRectMake(toolbarView.frame.size.width - buttonWidth, 0, buttonWidth, 50);
+    shuffleButton.titleLabel.font = titleFont;
     [shuffleButton setTitle:@"Random Keys" forState:UIControlStateNormal];
     [shuffleButton addTarget:self action:@selector(p_randomKeys:) forControlEvents:UIControlEventTouchUpInside];
     [toolbarView addSubview:shuffleButton];
     
+    
+    UIButton *changeTypeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    changeTypeButton.frame = CGRectMake(toolbarView.frame.size.width - buttonWidth, 0, buttonWidth, 50);
+    changeTypeButton.center = CGPointMake(toolbarView.frame.size.width / 2, changeTypeButton.center.y);
+    changeTypeButton.titleLabel.font = titleFont;
+    [changeTypeButton setTitle:@"Change Type" forState:UIControlStateNormal];
+    [changeTypeButton addTarget:self action:@selector(p_changeType:) forControlEvents:UIControlEventTouchUpInside];
+    [toolbarView addSubview:changeTypeButton];
+    
     UIButton *recoverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    recoverButton.frame = CGRectMake(0, 0, 50, 50);
+    recoverButton.frame = CGRectMake(0, 0, buttonWidth, 50);
+    recoverButton.titleLabel.font = titleFont;
     [recoverButton setTitle:@"Recover Keys" forState:UIControlStateNormal];
     [recoverButton addTarget:self action:@selector(p_recoverKeys:) forControlEvents:UIControlEventTouchUpInside];
-    [toolbarView addSubview:shuffleButton];
+    [toolbarView addSubview:recoverButton];
     
     
     return toolbarView;
@@ -78,16 +91,24 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 {
     WDKeyboardShuffleKeys(m_currentKeyboardRef);
     [self p_setupButtonsWithKeyboardRef:m_currentKeyboardRef];
-    [self setNeedsLayout];
-    
+    [self setNeedsDisplay];
 }
 
+
+- (void)p_changeType:(UIButton *)button
+{
+    
+    WDCKeyboardStyle nextStyle;//= _keyboardStyle;
+    nextStyle = ((_keyboardStyle + 1) % WDKeyboardTypeTotal);
+    self.keyboardStyle = nextStyle;
+    [self setNeedsDisplay];
+}
 
 - (void)p_recoverKeys:(UIButton *)button
 {
     WDKeyboardRecoverKeys(m_currentKeyboardRef);
     [self p_setupButtonsWithKeyboardRef:m_currentKeyboardRef];
-    [self setNeedsLayout];
+    [self setNeedsDisplay];
     
 }
 
@@ -134,7 +155,9 @@ WDC_DrawKeyWithChar(NSString *keyStr);
     NSArray *keysList = WDC_GetKeyListFromKeyboardRef(kbr);
     // reuse button if existed
     if (m_currentKeysButtons.count > 0) {
-        
+        [m_currentKeysButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [obj removeFromSuperview];
+        }];
     }
     
     
@@ -152,7 +175,10 @@ WDC_DrawKeyWithChar(NSString *keyStr);
         UIImage *keyImage = WDC_DrawKeyWithChar(keyStr);
         [b setImage:keyImage forState:UIControlStateNormal];
         b.frame = CGRectMake(0, 0, keyImage.size.width, keyImage.size.height);
-        
+        b.tag = idx;
+        [b addTarget:self
+              action:@selector(keyButtonPressed:)
+    forControlEvents:UIControlEventTouchUpInside];
         
         if (isReuse) {
             return;
@@ -164,7 +190,7 @@ WDC_DrawKeyWithChar(NSString *keyStr);
     
     NSUInteger diff = (m_currentKeysButtons.count - kbr->keySize);
     if (diff > 0) {
-        [m_currentKeysButtons removeObjectsInRange:NSMakeRange(m_currentKeysButtons.count - 1, diff)];
+        [m_currentKeysButtons removeObjectsInRange:NSMakeRange(m_currentKeysButtons.count - diff, diff)];
     }
 
 }
@@ -182,7 +208,7 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 {
  
     UIButton *testButon = [m_currentKeysButtons objectAtIndex:0];
-    int numOfRow = rect.size.height / testButon.frame.size.height;
+//    int numOfRow = rect.size.height / testButon.frame.size.height;
     int numOfCol = rect.size.width  / testButon.frame.size.width;
     
     
@@ -209,6 +235,15 @@ WDC_DrawKeyWithChar(NSString *keyStr);
         button.frame = f;
     }];
     
+}
+
+- (void)keyButtonPressed:(UIButton *)button
+{
+    NSUInteger keyIdx = button.tag;
+    
+    char pressedKey = m_currentKeyboardRef->keys[keyIdx];
+    
+    _textfield.text = [NSString stringWithFormat:@"%@%c", _textfield.text, pressedKey];
 }
 
 

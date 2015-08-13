@@ -25,6 +25,10 @@
 #define AlphabetKeySize strlen(AlphabetKeySet)
 
 
+#define NormalKeySet "1234567890-=QWERTYUIOP[]\\ASDFGHJKL;'ZXCVBM,./"
+#define NormalKeySize strlen(NormalKeySet)
+
+
 
 typedef struct _KeyInfo
 {
@@ -47,8 +51,8 @@ KeyInfo KeyInfoTable[WDKeyboardTypeTotal] =
     },
 //    .keyboards[WDKeyboardTypeNormal] =
     {
-        .numKeySize = AlphabetKeySize,
-        .keys = AlphabetKeySet,
+        .numKeySize = NormalKeySize,
+        .keys = NormalKeySet,
     },
 //    .keyboards[WDKeyboardTypeAlphabet] =
     {
