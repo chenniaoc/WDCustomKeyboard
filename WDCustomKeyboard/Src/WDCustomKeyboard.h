@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "WDKeyboard.h"
+#import "WDCSkinsManager.h"
 
 //typedef enum : NSUInteger {
 //    WDKeyboardTypeNumeric,

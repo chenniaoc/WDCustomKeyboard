@@ -36,7 +36,7 @@ WDC_DrawKeyWithChar(NSString *keyStr);
     m_currentKeysButtons = [NSMutableArray arrayWithCapacity:26];
     
     self.frame = (CGRect){0,0,320,300};
-    self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 }
 
 - (instancetype)initWithTextField:(UITextField *)textfield
@@ -56,36 +56,71 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 - (UIView *)p_createToolbarView
 {
     UIFont *titleFont = [UIFont systemFontOfSize:14.0f];
-    CGFloat buttonWidth = 100;
-    UIView *toolbarView = [[UIView alloc] initWithFrame:(CGRect){0,0,320,50}];
+    UIView *toolbarView = [[UIView alloc] initWithFrame:(CGRect){0,0,[UIScreen mainScreen].bounds.size.width,50}];
+    UIColor *titleColor = [UIColor darkGrayColor];
     
-    toolbarView.backgroundColor = [UIColor greenColor];
-    UIButton *shuffleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    shuffleButton.frame = CGRectMake(toolbarView.frame.size.width - buttonWidth, 0, buttonWidth, 50);
-    shuffleButton.titleLabel.font = titleFont;
-    [shuffleButton setTitle:@"Random Keys" forState:UIControlStateNormal];
-    [shuffleButton addTarget:self action:@selector(p_randomKeys:) forControlEvents:UIControlEventTouchUpInside];
-    [toolbarView addSubview:shuffleButton];
+    const NSInteger buttonTotal = 4;
     
+    CGFloat buttonWidth = toolbarView.frame.size.width / buttonTotal;
     
+    toolbarView.backgroundColor = [UIColor colorWithRed:232.0f/255
+                                                  green:240.0f/255
+                                                   blue:248.0f/255
+                                                  alpha:1.0f];
+    
+    CGFloat offsetX = 0;
     UIButton *changeTypeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    changeTypeButton.frame = CGRectMake(toolbarView.frame.size.width - buttonWidth, 0, buttonWidth, 50);
-    changeTypeButton.center = CGPointMake(toolbarView.frame.size.width / 2, changeTypeButton.center.y);
+    changeTypeButton.frame = CGRectMake(offsetX, 0, buttonWidth, 50);
     changeTypeButton.titleLabel.font = titleFont;
+    [changeTypeButton setTitleColor:titleColor forState:UIControlStateNormal];
     [changeTypeButton setTitle:@"Change Type" forState:UIControlStateNormal];
     [changeTypeButton addTarget:self action:@selector(p_changeType:) forControlEvents:UIControlEventTouchUpInside];
     [toolbarView addSubview:changeTypeButton];
     
+    
+    offsetX += buttonWidth;
+    UIButton *changeSkinButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    changeSkinButton.frame = CGRectMake(offsetX, 0, buttonWidth, 50);
+    changeSkinButton.titleLabel.font = titleFont;
+    [changeSkinButton setTitleColor:titleColor forState:UIControlStateNormal];
+    [changeSkinButton setTitle:@"Change Skin" forState:UIControlStateNormal];
+    [changeSkinButton addTarget:self action:@selector(p_changeSkins:) forControlEvents:UIControlEventTouchUpInside];
+    [toolbarView addSubview:changeSkinButton];
+    
+    
+    offsetX += buttonWidth;
     UIButton *recoverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    recoverButton.frame = CGRectMake(0, 0, buttonWidth, 50);
+    recoverButton.frame = CGRectMake(offsetX, 0, buttonWidth, 50);
     recoverButton.titleLabel.font = titleFont;
+    [recoverButton setTitleColor:titleColor forState:UIControlStateNormal];
     [recoverButton setTitle:@"Recover Keys" forState:UIControlStateNormal];
     [recoverButton addTarget:self action:@selector(p_recoverKeys:) forControlEvents:UIControlEventTouchUpInside];
     [toolbarView addSubview:recoverButton];
     
     
+    offsetX += buttonWidth;
+    UIButton *shuffleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    shuffleButton.frame = CGRectMake(offsetX, 0, buttonWidth, 50);
+    shuffleButton.titleLabel.font = titleFont;
+    [shuffleButton setTitleColor:titleColor forState:UIControlStateNormal];
+    [shuffleButton setTitle:@"Random Keys" forState:UIControlStateNormal];
+    [shuffleButton addTarget:self action:@selector(p_randomKeys:) forControlEvents:UIControlEventTouchUpInside];
+    [toolbarView addSubview:shuffleButton];
+    
+    
     return toolbarView;
 }
+
+- (void)p_changeSkins:(UIButton *)button
+{
+    WDCKeyboardSkin currentSKin = [WDCSkinsManager sharedInstance].skin;
+    WDCKeyboardSkin nextSkin = (currentSKin + 1) % WDCKeyboardSkinTotal;
+    [[WDCSkinsManager sharedInstance] setSkin:nextSkin];
+    
+    [self p_setupButtonsWithKeyboardRef:m_currentKeyboardRef];
+    [self setNeedsDisplay];
+}
+
 
 - (void)p_randomKeys:(UIButton *)button
 {
@@ -199,7 +234,11 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 
 - (void)drawRect:(CGRect)rect
 {
-    [[UIColor redColor] setFill];
+    [[WDCSkinsManager sharedInstance].theme.keyBgColor setFill];
+    
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    
+    CGContextFillRect(ctx, rect);
     
     [self arrangeKeyButtonsInRect:rect];
 }
@@ -207,13 +246,17 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 - (void)arrangeKeyButtonsInRect:(CGRect)rect
 {
  
+    
     UIButton *testButon = [m_currentKeysButtons objectAtIndex:0];
-//    int numOfRow = rect.size.height / testButon.frame.size.height;
-    int numOfCol = rect.size.width  / testButon.frame.size.width;
     
-    
-    __block CGFloat offSetx = 0;
+    CGFloat tailSpace = 30;
     __block CGFloat offsetY = 0;
+    __block CGFloat offSetx = -testButon.bounds.size.width;
+    
+    // may be config layout by keyboard type
+    
+    
+    
     // reuse button if existed
     [m_currentKeysButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         UIButton *button = obj;
@@ -222,7 +265,7 @@ WDC_DrawKeyWithChar(NSString *keyStr);
         }
         
         CGRect f = button.frame;
-        if (idx % numOfCol == 0) {
+        if ((offSetx + testButon.frame.size.width * 2 + tailSpace) > rect.size.width) {
             // line break
             offSetx = 0;
             offsetY += testButon.frame.size.height;
@@ -265,13 +308,15 @@ WDC_GetKeyListFromKeyboardRef(WDKeyboardRef kbr)
 }
 
 
+
+
 inline UIImage*
 WDC_DrawKeyWithChar(NSString *keyStr)
 {
     UIImage *resultImg = nil;
-    
-    UIFont *keyFont = [UIFont systemFontOfSize:22.0f];
-    CGSize keySize = CGSizeMake(30, keyFont.lineHeight + 5);
+    WDKeyboardSkinTheme *keyboardSkin = [WDCSkinsManager sharedInstance].theme;
+    UIFont *keyFont = keyboardSkin.keyFont;
+    CGSize keySize = keyboardSkin.keySize;
     CGRect keyBounds = CGRectMake(0, 0, keySize.width, keySize.height);
     
     UIGraphicsBeginImageContextWithOptions(keySize, YES, [UIScreen mainScreen].scale);
@@ -279,15 +324,17 @@ WDC_DrawKeyWithChar(NSString *keyStr)
     
     
     // draw key background
-    [[UIColor lightGrayColor] setFill];
-    [[UIColor blackColor] setStroke];
+    [keyboardSkin.keyBgColor setFill];
+    [keyboardSkin.keyBgBorderColor setStroke];
     CGContextFillRect(ctx, keyBounds);
     CGContextStrokeRect(ctx, keyBounds);
     
     
     // draw key character
-    [[UIColor blackColor] setFill];
-    [keyStr drawInRect:keyBounds withFont:keyFont lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentCenter];
+    [keyboardSkin.keyColor setFill];
+    [keyStr drawInRect:keyBounds
+              withFont:keyFont
+         lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentCenter];
     
     
     // retrive image object
