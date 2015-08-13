@@ -98,9 +98,9 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 - (void)p_changeType:(UIButton *)button
 {
     
-    WDCKeyboardStyle nextStyle;//= _keyboardStyle;
-    nextStyle = ((_keyboardStyle + 1) % WDKeyboardTypeTotal);
-    self.keyboardStyle = nextStyle;
+    WDCKeyboardType nextType;//= _keyboardStyle;
+    nextType = ((_keyboardType + 1) % WDKeyboardTypeTotal);
+    self.keyboardType = nextType;
     [self setNeedsDisplay];
 }
 
@@ -115,27 +115,27 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 
 #pragma mark Style
 
-- (void)setKeyboardStyle:(WDCKeyboardStyle)keyboardStyle
+- (void)setKeyboardStyle:(WDCKeyboardType)keyboardType
 {
-    if (_keyboardStyle != keyboardStyle) {
-        _keyboardStyle = keyboardStyle;
+    if (_keyboardType != keyboardType) {
+        _keyboardType = keyboardType;
         
         if (m_currentKeyboardRef) {
             WDKeyboardRelease(m_currentKeyboardRef);
         }
         
-        switch (keyboardStyle) {
-            case WDCKeyboardStyleNormal:
+        switch (keyboardType) {
+            case WDCKeyboardTypeNormal:
             {
                 m_currentKeyboardRef = WDCreateKeyboardByType(WDKeyboardTypeNormal);
             }
                 break;
-            case WDCKeyboardStyleNumeric:
+            case WDCKeyboardTypeNumeric:
             {
                 m_currentKeyboardRef = WDCreateKeyboardByType(WDKeyboardTypeNumeric);
             }
                 break;
-            case WDCKeyboardStyleAlphabet:
+            case WDCKeyboardTypeAlphabet:
             {
                 m_currentKeyboardRef = WDCreateKeyboardByType(WDKeyboardTypeAlphabet);
             }

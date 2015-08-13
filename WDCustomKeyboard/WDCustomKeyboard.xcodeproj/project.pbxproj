@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		897283DB1B7CB0650095F85D /* WDCSkinsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 897283DA1B7CB0650095F85D /* WDCSkinsManager.m */; };
 		89F3FA8D1B7B2217003A7BB8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F3FA8C1B7B2217003A7BB8 /* main.m */; };
 		89F3FA901B7B2217003A7BB8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F3FA8F1B7B2217003A7BB8 /* AppDelegate.m */; };
 		89F3FA931B7B2217003A7BB8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89F3FA921B7B2217003A7BB8 /* ViewController.m */; };
@@ -29,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		897283D91B7CB0650095F85D /* WDCSkinsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDCSkinsManager.h; sourceTree = "<group>"; };
+		897283DA1B7CB0650095F85D /* WDCSkinsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WDCSkinsManager.m; sourceTree = "<group>"; };
 		89F3FA871B7B2217003A7BB8 /* WDCustomKeyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WDCustomKeyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89F3FA8B1B7B2217003A7BB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		89F3FA8C1B7B2217003A7BB8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 				89F3FAB21B7B2298003A7BB8 /* WDCustomKeyboard.m */,
 				89F3FAB51B7B2A77003A7BB8 /* WDKeyboard.h */,
 				89F3FAB41B7B2A77003A7BB8 /* WDKeyboard.c */,
+				897283D91B7CB0650095F85D /* WDCSkinsManager.h */,
+				897283DA1B7CB0650095F85D /* WDCSkinsManager.m */,
 			);
 			path = Src;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				89F3FAB61B7B2A77003A7BB8 /* WDKeyboard.c in Sources */,
 				89F3FA901B7B2217003A7BB8 /* AppDelegate.m in Sources */,
 				89F3FA8D1B7B2217003A7BB8 /* main.m in Sources */,
+				897283DB1B7CB0650095F85D /* WDCSkinsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
