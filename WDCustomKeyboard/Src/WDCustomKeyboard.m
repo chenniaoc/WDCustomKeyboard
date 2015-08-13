@@ -115,7 +115,7 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 
 #pragma mark Style
 
-- (void)setKeyboardStyle:(WDCKeyboardType)keyboardType
+- (void)setKeyboardType:(WDCKeyboardType)keyboardType
 {
     if (_keyboardType != keyboardType) {
         _keyboardType = keyboardType;
