@@ -31,6 +31,7 @@
 - (void)setupViews
 {
     WDCustomKeyboard *keyboard = [[WDCustomKeyboard alloc] initWithTextField:_textfield];
+    [keyboard setKeyboardStyle:WDCKeyboardStyleAlphabet];
     
 }
 

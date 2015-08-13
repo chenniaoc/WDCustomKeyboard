@@ -32,12 +32,21 @@
 //WDKeyboardRef
 //WDCreateKeyboardByType(WDKeyboardType type);
 
+typedef NS_ENUM(NSUInteger, WDCKeyboardStyle)
+{
+    WDCKeyboardStyleNumeric,
+    WDCKeyboardStyleNormal,
+    WDCKeyboardStyleAlphabet,
+};
+
 
 
 
 @interface WDCustomKeyboard : UIView
 
 @property (nonatomic, weak) UITextField *textfield;
+
+@property (nonatomic, assign) WDCKeyboardStyle keyboardStyle;
 
 - (instancetype)initWithTextField:(UITextField *)textfield;
 

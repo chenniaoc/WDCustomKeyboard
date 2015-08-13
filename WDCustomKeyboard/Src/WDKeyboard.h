@@ -50,7 +50,6 @@ typedef struct _WDKeyboard  * WDKeyboardRef;
  *
  *  @return 新生成的键盘数据结构定义,用完记得free。
  */
-extern
 WDKeyboardRef
 WDCreateKeyboardByType(WDKeyboardType type);
 
@@ -59,7 +58,6 @@ WDCreateKeyboardByType(WDKeyboardType type);
  *
  *  @param keyboardRef keys里面的字符序列会被随机打乱
  */
-extern
 void
 WDKeyboardShuffleKeys(WDKeyboardRef keyboardRef);
 
@@ -68,14 +66,12 @@ WDKeyboardShuffleKeys(WDKeyboardRef keyboardRef);
  *
  *  @param keyboardRef keys里面的字符序列会被随机打乱
  */
-extern
 void
 WDKeyboardRecoverKeys(WDKeyboardRef keyboardRef);
 
 /**
  * 释放WDKeyboardRef 资源
  */
-extern
 void
 WDKeyboardRelease(WDKeyboardRef keyboardRef);
 
