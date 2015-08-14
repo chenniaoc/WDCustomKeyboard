@@ -23,6 +23,8 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 {
     WDKeyboardRef m_currentKeyboardRef;
     NSMutableArray *m_currentKeysButtons;
+    UIButton *m_deleteButton;
+    UIButton *m_enterButton;
 }
 
 
@@ -37,6 +39,28 @@ WDC_DrawKeyWithChar(NSString *keyStr);
     
     self.frame = (CGRect){0,0,320,300};
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    m_deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [m_deleteButton setTitle:@"Del" forState:UIControlStateNormal];
+    [m_deleteButton addTarget:self
+                       action:@selector(p_deleteKey:)
+             forControlEvents:UIControlEventTouchUpInside];
+    m_deleteButton.frame = CGRectMake(self.frame.size.width - 40, 0, 40, 44);
+    m_deleteButton.titleLabel.adjustsFontSizeToFitWidth = 1;
+    [self addSubview:m_deleteButton];
+    
+    
+    m_enterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [m_enterButton setTitle:@"Enter" forState:UIControlStateNormal];
+    [m_enterButton addTarget:self
+                       action:@selector(p_enterButton:)
+             forControlEvents:UIControlEventTouchUpInside];
+    
+    m_enterButton.titleLabel.minimumScaleFactor = 0.1;
+    m_enterButton.titleLabel.adjustsFontSizeToFitWidth = 1;
+    m_enterButton.frame = CGRectMake(self.frame.size.width - 40, 44, 40, 44);
+    [self addSubview:m_enterButton];
+    
 }
 
 - (instancetype)initWithTextField:(UITextField *)textfield
@@ -55,7 +79,7 @@ WDC_DrawKeyWithChar(NSString *keyStr);
 #pragma mark TopToolBar
 - (UIView *)p_createToolbarView
 {
-    UIFont *titleFont = [UIFont systemFontOfSize:14.0f];
+    UIFont *titleFont = [UIFont systemFontOfSize:10.0f];
     UIView *toolbarView = [[UIView alloc] initWithFrame:(CGRect){0,0,[UIScreen mainScreen].bounds.size.width,50}];
     UIColor *titleColor = [UIColor darkGrayColor];
     
@@ -147,6 +171,36 @@ WDC_DrawKeyWithChar(NSString *keyStr);
     
 }
 
+- (void)p_deleteKey:(UIButton *)button
+{
+    UITextRange *selectedRange = [_textfield selectedTextRange];
+    NSString *oriStr = _textfield.text;
+    NSInteger startP = [_textfield offsetFromPosition:_textfield.beginningOfDocument toPosition:selectedRange.start];
+    if (startP == 0) {
+    }
+    else if (startP == oriStr.length)
+    {
+        _textfield.text = [oriStr substringToIndex:oriStr.length - 1];
+    } else {
+        NSString *leftStr = @"";
+        NSString *rightStr = @"";
+        
+        leftStr = [oriStr substringToIndex:startP];
+        rightStr = [oriStr substringFromIndex:startP + 1];
+        _textfield.text = [NSString stringWithFormat:@"%@%@", leftStr, rightStr];
+        
+        
+        UITextPosition *newStart = [_textfield positionFromPosition:selectedRange.start offset:-1];
+        UITextRange *newRange = [_textfield textRangeFromPosition:newStart toPosition:newStart];
+        [_textfield setSelectedTextRange:newRange];
+    }
+}
+
+- (void)p_enterButton:(UIButton *)button
+{
+    [_textfield resignFirstResponder];
+}
+
 
 #pragma mark Style
 
@@ -222,6 +276,10 @@ WDC_DrawKeyWithChar(NSString *keyStr);
         }
         
     }];
+    WDKeyboardSkinTheme *theme = [WDCSkinsManager sharedInstance].theme;
+    [m_enterButton setTitleColor:theme.keyColor forState:UIControlStateNormal];
+    [m_deleteButton setTitleColor:theme.keyColor forState:UIControlStateNormal];
+    
     
     NSUInteger diff = (m_currentKeysButtons.count - kbr->keySize);
     if (diff > 0) {
@@ -286,7 +344,34 @@ WDC_DrawKeyWithChar(NSString *keyStr);
     
     char pressedKey = m_currentKeyboardRef->keys[keyIdx];
     
-    _textfield.text = [NSString stringWithFormat:@"%@%c", _textfield.text, pressedKey];
+    
+    UITextRange *selectedRange = _textfield.selectedTextRange;
+    NSInteger cursorPosition = [_textfield offsetFromPosition:_textfield.beginningOfDocument  toPosition:selectedRange.start];
+    
+    NSString *orgStr = _textfield.text;
+    NSString *leftStr = @"";
+    NSString *rightStr = @"";
+    if (cursorPosition < orgStr.length) {
+        leftStr = [orgStr substringToIndex:cursorPosition];
+        rightStr = [orgStr substringFromIndex:cursorPosition];
+    } else {
+        leftStr = orgStr;
+    }
+    
+    
+    [leftStr substringFromIndex:cursorPosition];
+    
+    _textfield.text = [NSString stringWithFormat:@"%@%c%@",
+                                        leftStr, pressedKey, rightStr];
+    
+    if (![rightStr isEqual:@""]) {
+
+        
+        UITextPosition *newStart = [_textfield positionFromPosition:selectedRange.start offset:1];
+        UITextRange *newRange = [_textfield textRangeFromPosition:newStart toPosition:newStart];
+        [_textfield setSelectedTextRange:newRange];
+    }
+    
 }
 
 
