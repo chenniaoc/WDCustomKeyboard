@@ -2,7 +2,7 @@
 
 ------
 
-A few days a go,I have read a [article](http://www.163.com) about exploiting private api in iOS to record anything user typed without a un-jailborken device.
+A few days a go,I have read a [article](http://iphonedevwiki.net/index.php/IOHIDFamily) about exploiting private api in iOS to record anything user typed without a jailborken device.
 
 
 ###features
