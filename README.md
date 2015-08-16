@@ -17,4 +17,11 @@ A few days a go,I have read a [article](http://www.163.com) about exploiting pri
     3. Anything user typed will not be persistented.
     
 ###Demo:
-![Demo](https://raw.githubusercontent.com/chenniaoc/WDCustomKeyboard/master/keyboard_demo.gif)
+
+ ![Demo](https://raw.githubusercontent.com/chenniaoc/WDCustomKeyboard/master/keyboard_demo.gif)
+    
+###Why it more sec than built-in keyboard in iOS system.
+ * iOS will persistent information user typed.[here](http://lifehacker.com/5134799/safari-the-only-sure-fire-way-to-update-iphones-auto-correct-database)
+ * Malicious App will monitor sensitive infomation even on a un-jailborken i-device.
+ * The data strucure underneath is hold by c struct in memory,not direct in objc.In addition to data structure, Functions like shuffle,recover,change type is implemented use C99. Because of,objc's machine code is easily to read. 
+ * Finally,I highly recommend that build this  by [llvm obfuscator](https://github.com/obfuscator-llvm/obfuscator).It makes more complex instruction sets that hacker can not reverse engineering.
