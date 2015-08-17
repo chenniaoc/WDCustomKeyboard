@@ -10,7 +10,7 @@ A few days a go,I have read a [article](http://iphonedevwiki.net/index.php/IOHID
  you can define any charater sets you want
  
  >* Flexible keyboard skins
- >* Most things I want to say 3 times,
+ >* Important things I want to say 3 times,
  Security!,Security!,Security!
     1. User can easily change the order of all keys on the keyboard(by shuffle the key set linked list).
     2. User can simple recover the default key arrangement.
